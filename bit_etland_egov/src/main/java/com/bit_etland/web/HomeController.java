@@ -30,14 +30,11 @@ public class HomeController {
 	@Autowired HttpSession session;
 	@Autowired HttpServletRequest request;
 	@RequestMapping("/")
-	public String home(Locale locale, Model model, HttpSession session, 
-			HttpServletRequest request) {
+	public String home(Locale locale, Model model) {
 		
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		
-		String ctx = request.getContextPath();
-		session.setAttribute("ctx", ctx);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
