@@ -2,9 +2,9 @@ var compo = compo ||{}
 compo = {
 		cust_login_form : ()=>{ 
 			return '<h2>회원 로그인</h2>'
-			+'	<form action="/action_page.php">'
+			+'	<form>'
 			+'		<div class="imgcontainer">'
-			+'			<img src="<%=application.getContextPath()%>/resources/img/img_avatar2.png" alt="Avatar" class="avatar">'
+			+'			<img src="resources/img/img_avatar2.png" alt="Avatar" class="avatar">'
 			+'		</div>'
 			+'	<div class="container">'
 			+'		<label for="uname"><b>Username</b></label>'
@@ -52,7 +52,7 @@ compo = {
 			return '<h2>사원 로그인</h2>'
 			+'	<form action="/action_page.php">'
 			+'		<div class="imgcontainer">'
-			+'			<img src="<%=application.getContextPath()%>/resources/img/img_avatar2.png" alt="Avatar" class="avatar">'
+			+'			<img src="resources/img/img_avatar2.png" alt="Avatar" class="avatar">'
 			+'		</div>'
 			+'	<div class="container">'
 			+'		<label for="uname"><b>Username</b></label>'

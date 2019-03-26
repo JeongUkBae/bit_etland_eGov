@@ -10,7 +10,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="<%=application.getContextPath()%>/resources/css/defaulte/singup.css" />
-  
+  <link rel="shortcut icon" href="<%=application.getContextPath()%>/resources/img/favicon.ico">
   <style>
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 1500px}
@@ -128,11 +128,11 @@
   <p>Footer Text</p>
 </footer>
 <script src="<%=application.getContextPath()%>/resources/js/app.js"></script>
-<script src="<%=application.getContextPath()%>/resources/js/common.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/router.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/component/compo.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/employee/emp.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/customer/cust.js"></script>
+<script src="<%=application.getContextPath()%>/resources/js/common/auth.js"></script>
 <script>
 
 app.init('<%=application.getContextPath()%>');
