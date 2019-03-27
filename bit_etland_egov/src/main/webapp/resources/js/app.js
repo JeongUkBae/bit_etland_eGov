@@ -14,7 +14,6 @@ app =  (()=>{
 			$.getScript($.js()+'/common/auth.js')
 		).done(()=>{
 			auth.init();
-
 		});  
 	};
 

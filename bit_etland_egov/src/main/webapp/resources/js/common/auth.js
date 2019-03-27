@@ -7,6 +7,7 @@ auth = (()=>{
 	*/
 	let _,js,compojs,r_cnt, l_cnt;
 	let init =()=>{
+		
 		  _ = $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
@@ -15,14 +16,18 @@ auth = (()=>{
 		onCreate();
 	};
 	let onCreate =()=>{
+		
 		setContentView();
 		};
 	let setContentView =()=>{
 		$.getScript($.js()+'/component/compo.js')
 		.done(()=>{
-			$('#right_content').empty();
-			$(compo.cust_login_form()).appendTo('#right_content');
-			login();
+			
+		/*	let a = {name : $('form li[name=login]').val() };
+			alert('aa?::' +a.name);
+			if (a){}*/
+			
+			
 			$('#left_content ul').empty();
 			let arr = [
 				{val:'회원 로그인', name:'login'},
@@ -30,6 +35,7 @@ auth = (()=>{
 				{val:'사원 로그인', name:'access'},
 				{val:'사원 가입', name:'registe'}];
 			$.each(arr,(i,j)=>{
+				
 				$('<li><a href="#">'+j.val+'</a></li>')
 					.attr('name',j.name)
 					.addClass('cursor')
@@ -41,6 +47,7 @@ auth = (()=>{
 							$('#right_content').empty();
 							$(compo.cust_login_form()).appendTo('#right_content');
 							login();
+
 							break;
 						case 'join' : 
 							$('#right_content').empty();
@@ -57,7 +64,7 @@ auth = (()=>{
 						}
 					});
 			}); //navi_end
-			
+		
 		
 		})
 		.fail(()=>{
@@ -65,6 +72,12 @@ auth = (()=>{
 		});
 	};
 	let login =()=>{
+		$('#right_content').empty();
+		$(compo.cust_login_form()).appendTo('#right_content');
+		/*$('#right_content').html(compo.cust_login_form());*/
+		action();
+	};
+	let action =()=>{
 		$('form button[type=submit]').click(e=>{	
 			let data = {customerID:$('form input[name=uname]').val(), 
 						password:$('form input[name=psw]').val()};
@@ -76,7 +89,14 @@ auth = (()=>{
 				dataType: 'json',
 				contentType: 'application/json; charset=UTF-8',
 				success: d=>{
-					alert('성공 :: '+d.customerID);
+					if(d.customerID!==''){
+						alert('로그인성공::'+d.customerID);
+						$('#right_content').empty();
+						$(compo.cust_mypage()).appendTo('#right_content');
+					}else{
+						alert('로그인 실패');
+					}
+						
 				},
 				error: e=>{
 					alert('실패');
@@ -84,9 +104,11 @@ auth = (()=>{
 			});
 		});	
 	};
+
+	
     let join =()=>{};
     let register =()=>{};
     let access =()=>{};
-	return {init:init};
+	return {init:init, login:login};
 	
 })();
