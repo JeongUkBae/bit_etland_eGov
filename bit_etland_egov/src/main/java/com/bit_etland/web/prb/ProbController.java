@@ -1,4 +1,4 @@
-package com.bit_etland.web.prob;
+package com.bit_etland.web.prb;
 
 public class ProbController {
 

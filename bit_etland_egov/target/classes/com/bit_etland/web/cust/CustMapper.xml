@@ -39,10 +39,10 @@
         						#{password}, 
         						#{ssn},
         						#{phone},
-        						#{photo},
         						#{city},
         						#{address},
-        						#{postalcode})
+        						#{postalcode}
+        						)
   </insert>
 
     <update id="updateCustomer" parameterType="com.bit_etland.web.cust.Customer" 
