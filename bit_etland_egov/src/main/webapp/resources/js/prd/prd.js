@@ -23,6 +23,19 @@ prod = (()=>{
 		$(compo.shop_Carousel()).appendTo(r_cnt);
 		/*$(compo.shop_Carousel).html(r_cnt);*/
 	};
+	let post =()=>{
+		
+	};
+	let get =()=>{
+		
+	};
+	let put =()=>{
+		
+	};
+	let del =()=>{
+		
+	};
+	
 	return {init:init}
 	
 })();
