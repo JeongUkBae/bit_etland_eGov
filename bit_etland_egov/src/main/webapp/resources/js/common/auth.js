@@ -11,8 +11,10 @@ auth = (()=>{
 		  _ = $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
+	      custjs = js+'/customer/cust.js';
 	      r_cnt = '#right_content';
 	      l_cnt = '#left_content';
+	      
 		onCreate();
 	};
 	let onCreate =()=>{
@@ -23,6 +25,7 @@ auth = (()=>{
 		$.getScript($.js()+'/component/compo.js')
 		.done(()=>{
 			$('#right_content').html(compo.cust_login_form());
+			$()
 			$('form button[type=submit]').click(e=>{
 				e.preventDefault();
 				login();
@@ -38,10 +41,13 @@ auth = (()=>{
 				
 				$('<li><a href="#">'+j.val+'</a></li>')
 					.attr('name',j.name)
+					.attr('id',j.name)
 					.addClass('cursor')
 					.appendTo('#left_content ul')
 					.click(function(){
 						let that = $(this).attr('name');
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
 						switch(that){
 						case 'login' : 
 							$('#right_content').empty();
@@ -79,7 +85,7 @@ auth = (()=>{
 						}
 					});
 			}); //navi_end
-		
+			$('#login').addClass('active');
 		
 		})
 		.fail(()=>{
@@ -100,7 +106,6 @@ auth = (()=>{
 					if(d.customerID!==''){
 						alert('로그인성공::'+d.customerID);
 						/*$('#right_content').html('<h1>테스트</h1>')*/
-						
 						cust.init(d);
 						
 						

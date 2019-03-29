@@ -11,6 +11,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="<%=application.getContextPath()%>/resources/css/defaulte/singup.css" />
   <link rel="shortcut icon" href="<%=application.getContextPath()%>/resources/img/favicon.ico">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ 
   <style>
     /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
     .row.content {height: 1500px}
@@ -36,6 +40,8 @@
       }
       .row.content {height: auto;} 
     }
+    
+    /* html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif} */
   </style>
 </head>
 <body>
@@ -133,6 +139,7 @@
 <script src="<%=application.getContextPath()%>/resources/js/employee/emp.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/customer/cust.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/common/auth.js"></script>
+<script src="<%=application.getContextPath()%>/resources/js/prd/prd.js"></script>
 <script>
 
 app.init('<%=application.getContextPath()%>');

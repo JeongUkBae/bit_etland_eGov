@@ -32,6 +32,7 @@ public class CustController {
 	@Autowired PrintService ps;
 	@Autowired CustomerMapper custMap;
 	@Autowired Map<String, Object> map;
+	
 	@PostMapping("/customers/{userid}")
 	public Customer login(
 		@PathVariable String userid,
@@ -55,6 +56,7 @@ public class CustController {
 		return ls;
 	}
 
+	
 	@PostMapping("/customers")
 	public Map<String, Object> join(
 			@RequestBody Customer param) {
@@ -67,7 +69,7 @@ public class CustController {
 		return map;
 	}
 
-	@PutMapping("/customers/update")
+	@PutMapping("/customers/{userid}")
 	public Map<String, Object> update(
 			@PathVariable String userid,
 			@RequestBody Customer param) {
@@ -90,7 +92,6 @@ public class CustController {
 		map.put("msg", "SUCCESS");
 		return map;
 	}
-	
 	
 	
 }

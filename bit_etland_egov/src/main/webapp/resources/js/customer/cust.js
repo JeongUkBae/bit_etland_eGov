@@ -5,6 +5,7 @@ cust = (()=>{
 		  _ = $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
+	      prdjs = js+'/prd/prd.js';
 	      r_cnt = '#right_content';
 	      l_cnt = '#left_content';
 		onCreate(x);
@@ -13,16 +14,90 @@ cust = (()=>{
 		setContentView(x);
 	};
 	let setContentView =(x)=>{
-		$.getScript(compojs)
-		.done(()=>{
+		$.getScript(compojs,()=>{
 			myPage(x);
 			$('div button[type=submit]').click(e=>{
 				alert('정보수정 클릭 ');
 				upDatepage(x);
-				
 				e.preventDefault();
 			});
+			$('#left_content ul').empty();
+			let arr = [
+				{val:'마이페이지', name:'nav_mypage'},
+				{val:'정보수정', name:'nav_update'},
+				{val:'회원탈퇴', name:'nav_delete'},
+				{val:'쇼핑몰', name:'nav_shop'},
+				{val:'구매내역', name:'nav_history'},
+				{val:'장바구니', name:'nav_basket'}
+				];
+			$.each(arr,(i,j)=>{
+				$('<li><a href="#">'+j.val+'</a></li>')
+					.attr('name',j.name)
+					.attr('id',j.name)
+					.addClass('cursor')
+					.appendTo('#left_content ul')
+					.click(function(){
+						let that = $(this).attr('name');
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						switch(that){
+						case 'nav_mypage' : 
+							alert('마이페이지 클릭!')
+							$('.nav li[name=nav_mypage]').click(e=>{
+							
+								e.preventDefault();
+								/*updateE();*/
+							});
 
+							break;
+						case 'nav_update' : 
+							alert('회원수정 클릭!')
+							$('.nav li[name=nav_update]').click(e=>{
+								
+								e.preventDefault();
+								/*updateE();*/
+							});
+
+							break;
+						case 'nav_delete' : 
+							alert('회원탈퇴 클릭 ')
+							$('.nav li[type=nav_delete]').click(e=>{
+								e.preventDefault();
+								
+								
+							});
+							
+							break;
+						case 'nav_shop' : 
+							alert('쇼핑몰 클릭 ');
+							prod.init();
+							
+							$('.nav li[type=nav_shop]').click(e=>{
+								e.preventDefault();
+							});
+							
+							break;
+						case 'nav_history' : 
+							alert('주문내역 클릭 ')
+							$('.nav li[type=nav_history]').click(e=>{
+								e.preventDefault();
+								
+
+							});
+							break;
+					
+						case 'nav_basket' : 
+							alert('장바구니 클릭 ')
+							$('.nav li[type=nav_basket]').click(e=>{
+								e.preventDefault();
+								
+
+							});
+							break;
+						}
+					});
+			}); //navi_end
+			$('#nav_mypage').addClass('active');
 			
 		});
 	};
@@ -88,5 +163,7 @@ cust = (()=>{
 
     	
 	};
+	
+	
 	return {init:init}
 })();
