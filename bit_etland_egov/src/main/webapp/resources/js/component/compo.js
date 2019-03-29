@@ -295,7 +295,7 @@ compo = {
 			
 		},
 		prod_post : ()=>{
-			return +'<div class="form-group">'
+			return '<div class="form-group">'
 			+'  <label for="productName">상품명 :</label>'
 			+'  <input type="text" class="form-control" id="productName" name="productName">'
 			+'</div>'
