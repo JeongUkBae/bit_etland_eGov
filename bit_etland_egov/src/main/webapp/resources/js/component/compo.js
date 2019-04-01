@@ -53,26 +53,33 @@ compo = {
 
 			
 		},
-		
+		emp_input : ()=>{
+			return '<label for="EmployeeID"><b>EmployeeID</b></label>'
+			+'			<input type="text" placeholder="Enter EmployeeID" id="employeeID" name="employeeID" "required">'
+			+'		<label for="name"><b>Name</b></label>'
+			+'    		<input type="text" placeholder="Enter Name" id="name" name="name" "required">'
+			+'			<button type="submit"  id="access_btn" >접속</button>';
+			
+		},
 		emp_access_form : ()=>{ 
 			return '<h2>사원 로그인</h2>'
 			+'	<form action="/action_page.php">'
 			+'		<div class="imgcontainer">'
 			+'			<img src="resources/img/img_avatar2.png" alt="Avatar" class="avatar">'
 			+'		</div>'
-			+'	<div class="container">'
+			/*			+'	<div class="container">'
 			+'		<label for="EmployeeID"><b>EmployeeID</b></label>'
-			+'			<input type="text" placeholder="Enter EmployeeID" name="employeeID" "required">'
+			+'			<input type="text" placeholder="Enter EmployeeID" name="employeeID" value="1000" "required">'
 			+'		<label for="name"><b>Name</b></label>'
-			+'    		<input type="password" placeholder="Enter Name" name="name" "required">'
-			+'			<button type="submit">ACCESS</button>'
+			+'    		<input type="text" placeholder="Enter Name" id="name" name="name" value="김경민" "required">'*/
+			+'			<button type="submit"  id="access_btn" >ACCESS</button>'
 			+'		<label>'
 			+'		<input type="checkbox" checked="checked" name="remember"> "Remember me"'
 			+'		</label>'
 			+'	</div>'
 			+'	<div class="container" style="background-color:#f1f1f1">'
 			+'			<button type="button" class="cancelbtn">Cancel</button>'
-			+'		<span class="psw">Forgot <a href="#">password?</a></span>'
+			+'		<span class="psw"> <a href="#">password?</a></span>'
 			+'	</div>'
 			+'</form>'
 		},
@@ -348,6 +355,30 @@ compo = {
 			+'  <label for="comment">상세설명:</label>'
 			+'  <textarea class="form-control" rows="5" id="comment"></textarea>'
 			+'</div>'
+		},
+		list : ()=>{
+			return '<div class="grid" id="side-menu" >'
+			+'<div class="grid-item" id="content" >'
+			+'<div class="col-xs-6">'
+					+'<h1><font style="font-size: 30px">회원 리스트 </font></h1>'
+				+'<table id="cust_content" style="width: 100%" >'
+				  +'<tr >'
+				    +'<th>No.</th>'
+				    +'<th>아이디</th>'
+				    +'<th>이름</th>'
+				    +'<th>생년월일</th>'
+				    +'<th>성별</th>'
+				    +'<th>핸드폰</th>'
+				    +'<th>도시</th>'
+				    +'<th>상세주소</th>'
+				    +'<th>우편번호</th>'
+				  +'</tr>'
+				+'</table>'
+				+'</div>'
+			   +'</div>'
+			  +'</div>	'
+			  +'</div>'
+			
 		}
 		
 	

@@ -1,44 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bit_etland.web.cust.CustomerMapper">
-  <select id="selectCustomer" resultType="com.bit_etland.web.cust.Customer">
+<mapper namespace="com.bit_etland.web.emp.EmployeeMapper">
+  <select id="findOneEmployee" resultType="com.bit_etland.web.emp.Employee">
     SELECT 
-    		CUSTOMER_ID customerID,
-        	CUSTOMER_NAME customerName, 
-        	PASSWORD, 
-        	SSN, 
-        	PHONE,
-        	PHOTO, 
-        	CITY, 
-        	ADDRESS, 
-        	POSTALCODE
-    FROM CUSTOMERS 
-    WHERE CUSTOMER_ID LIKE #{customerID}
-	 	<if test="password != null"> 
-    <!-- 	<if test="attr=='password'"> -->
+    		Employee_ID employeeID,
+    		MANAGER,
+    		NAME,
+    		BIRTH_DATE birthDate,
+    		PHOTO photo,
+    		NOTES notes
+    FROM EMPLOYEES 
+<!--     WHERE EMPLOYEE_ID LIKE #{employeeID} -->
+<!-- 	 	<if test="password != null"> 
+    	<if test="attr=='password'">
     		AND PASSWORD LIKE #{password}
-     	</if> 
+     	</if>  -->
 
     
     
   </select>
-    <select id="selectCustomers" resultType="com.bit_etland.web.cust.Customer"
-    	parameterType="com.bit_etland.web.cmm.Proxy">
-    SELECT  CUSTOMER_ID customerID,
-        	CUSTOMER_NAME customerName, 
-        	PASSWORD, 
-        	SSN, 
-        	PHONE,
-        	PHOTO, 
-        	CITY, 
-        	ADDRESS, 
-        	POSTALCODE
-    FROM CUSTOMERS 
-
-  </select>
-  <insert id="insertCustomer" parameterType="com.bit_etland.web.cust.Customer"
+  <insert id="insertCustomer" parameterType="com.bit_etland.web.emp.Employee"
   			flushCache="true" statementType="PREPARED" timeout="20">
   		  INSERT INTO CUSTOMERS (CUSTOMER_ID,
         					   CUSTOMER_NAME, 
@@ -59,7 +42,7 @@
         						)
   </insert>
 
-    <update id="updateCustomer" parameterType="com.bit_etland.web.cust.Customer" 
+    <update id="updateCustomer" parameterType="com.bit_etland.web.emp.Employee" 
     		flushCache="true" statementType="PREPARED" timeout="20"> 
  		UPDATE CUSTOMERS
  			SET PASSWORD = #{password}, 
@@ -71,7 +54,7 @@
  
  	</update>
   
- 	<delete id="deleteCustomer" parameterType="com.bit_etland.web.cust.Customer" 
+ 	<delete id="deleteCustomer" parameterType="com.bit_etland.web.emp.Employee" 
  			flushCache="true" statementType="PREPARED" timeout="20"> 
   		DELETE FROM CUSTOMERS WHERE LIKE CUSTOMER_ID LIKE #{customerID}
                                            AND PASSWORD LIKE #{password}	

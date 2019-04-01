@@ -8,7 +8,7 @@ auth = (()=>{
 	let _,js,compojs,r_cnt, l_cnt;
 	let init =()=>{
 		
-		  _ = $.ctx();
+		  _= $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
 	      custjs = js+'/customer/cust.js';
@@ -71,7 +71,11 @@ auth = (()=>{
 						case 'access' : 
 							$('#right_content').empty();
 							$(compo.emp_access_form()).appendTo('#right_content');
-
+							$('#access_btn').click(e=>{
+								e.preventDefault();
+								alert('access_btn 클릭!');
+								access();
+							});
 							break;
 						case 'registe' : 
 							$('#right_content').empty();
@@ -197,32 +201,62 @@ auth = (()=>{
     	
     };
     let access =()=>{
-    	let data = {employeeID:$('form input[name=employeeID]').val(), 
+    	let ok = confirm('사원 입니까?');
+    	if(ok){
+    		let emp_no = prompt('사원번호를 입력하세요.')
+    		$.getJSON(_+'/Employees',d=>{
+	    		if(emp_no==d.employeeID){
+	    			alert('사원인증');
+	    			// 이름 입력창을 그린다. 
+	    			$('.container').empty();
+	    			$('#access_btn').empty();
+	    			$('.container').after(compo.emp_input);
+	    			$('#employeeID').attr('value',d.employeeID);
+	    			$('#name').attr('value',d.name);
+	    			if($('#name').val()===d.name){
+	    				//고객명단 그린다.
+	    				$.getScript(custjs,()=>{
+	    					cust.list();
+	    				});
+	    			}else{
+	    				
+	    			}
+	    		}else{
+	    			alert('사원번호가 일치하지 않습니다.');
+	    			// 사원번호가 일치하지 않습니다.
+	    		}
+    		});
+    	}else{
+    		alert('사원 전용 페이지 입니다.');
+    		// 사원 전용 페이지 입니다. 
+    		// 되돌아가기 버튼이 보인다.
+    	}
+    /*	let data = {employeeID:$('form input[name=employeeID]').val(), 
     			name:$('form input[name=name]').val()};
-	alert('ID :: '+data.employeeID);
-	$.ajax({
-		url: $.ctx()+'/employees',
-		type: 'post',
-		data: JSON.stringify(data),
-		dataType: 'json',
-		contentType: 'application/json; charset=UTF-8',
-		success: d=>{
-			if(d.customerID!==''){
-				alert('로그인성공::'+d.customerID);
-				/*$('#right_content').html('<h1>테스트</h1>')*/
-				$('#right_content').html(compo.cust_mypage());
-				
-			//	$(compo.cust_mypage()).appendTo('#right_content');
-			}else{
-				alert('로그인 실패');
-				$(compo.emp_access_form()).html('#right_content');
+    	alert('ID :: '+data.employeeID);
+		$.ajax({
+			url: $.ctx()+'/employees/'+data.employeeID,
+			type: 'post',
+			data: JSON.stringify(data),
+			dataType: 'json',
+			contentType: 'application/json; charset=UTF-8',
+			success: d=>{
+				if(d.employeeID!==''){
+					alert('로그인성공::'+d.employeeID);
+					$('#right_content').html('<h1>테스트</h1>')
+					$('#right_content').html(compo.emp_mypage());
+					
+				//	$(compo.cust_mypage()).appendTo('#right_content');
+				}else{
+					alert('로그인 실패');
+					$(compo.emp_access_form()).html('#right_content');
+				}
+					
+			},
+			error: e=>{
+				 
 			}
-				
-		},
-		error: e=>{
-			alert('실패');
-		}
-	});
+		});*/
     };
 	return {init:init, login:login};
 	

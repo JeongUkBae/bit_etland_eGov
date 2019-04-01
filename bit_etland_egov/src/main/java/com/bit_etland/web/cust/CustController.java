@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
+import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
+import com.bit_etland.web.cmm.Proxy;
 
-//test  dfdf
+
 /**
  * Handles requests for the application home page.
  */
@@ -32,6 +34,7 @@ public class CustController {
 	@Autowired PrintService ps;
 	@Autowired CustomerMapper custMap;
 	@Autowired Map<String, Object> map;
+	@Autowired Proxy pxy;
 	
 	@PostMapping("/customers/{userid}")
 	public Customer login(
@@ -45,14 +48,19 @@ public class CustController {
 	
 
 	@SuppressWarnings("unchecked")
-	@GetMapping("/customers/page/{page}")
+	@GetMapping("/customers/page/{num}")
 	public List<Customer> list(
-			@PathVariable String page,
-			@RequestBody Map<?,?> param) {
+			@PathVariable String num) {
 		logger.info("======= list 진입 ======");
-		IFunction i = (Object o) -> custMap.selectCustomers(param);
-		List<Customer> ls = (List<Customer>) i.apply(param);
-		ps.accept(ls);
+		map.clear();
+		map.put("page_num", "1");
+		map.put("page_size", "5");
+		map.put("block_Size", "5");
+		map.put("total_count", "10");
+		pxy.carryOut(map);
+		IFunction i = (Object o) -> custMap.selectCustomers(pxy);
+		List<Customer> ls = (List<Customer>) i.apply(pxy);
+	
 		return ls;
 	}
 

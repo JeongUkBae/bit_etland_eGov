@@ -1,19 +1,24 @@
 var cust = cust || {}
 cust = (()=>{
-	let _,js,compojs,r_cnt, l_cnt;
-	let init =(x)=>{
-		  _ = $.ctx();
+	let setpath =()=>{
+		 _= $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
 	      prdjs = js+'/prd/prd.js';
+	      custjs = js+'/customer/cust.js';
 	      r_cnt = '#right_content';
 	      l_cnt = '#left_content';
-		onCreate(x);
+		
 	};
-	let onCreate =(x)=>{
-		setContentView(x);
+	
+	let init =()=>{
+		setpath()
+		onCreate();
 	};
-	let setContentView =(x)=>{
+	let onCreate =()=>{
+		setContentView();
+	};
+	let setContentView =()=>{
 		$.getScript(compojs,()=>{
 			myPage(x);
 			$('div button[type=submit]').click(e=>{
@@ -163,7 +168,28 @@ cust = (()=>{
 
     	
 	};
+	let list = ()=>{
+		setpath();
+		alert('cust list 접근');
+		$.getJSON(_+'/customers/page/1',d=>{
+			$(r_cnt).html(compo.list);
+			$.each(d,(i,j)=>{
+				$('<tr><td id="custIndex'+i+'">'+i+'</td>'
+			    +'<td class="custID'+i+'">'+j.customerID+'</td>'
+			    +'<td class="custName'+i+'">'+j.customerName+'</td>'
+			    +'<td class="ssn'+i+'">'+j.ssn+'</td>'
+			    +'<td class="ssn_'+i+'">'+'남'+'</td>'
+			    +'<td class="custPhone'+i+'">'+j.phone+'</td>'
+			    +'<td class="custCity'+i+'">'+j.city+'</td>'
+			    +'<td class="custAdd'+i+'">'+j.address+'</td>'
+			    +'<td class="custPostal'+i+'">'+j.postalcode+'</td></tr>').appendTo('#cust_content');
+
+			});
+			
+		});
+		
+	};
 	
 	
-	return {init:init}
+	return {init:init, list:list}
 })();

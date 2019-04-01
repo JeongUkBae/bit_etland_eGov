@@ -10,7 +10,7 @@ public class Employee {
 	private String employeeID, 
 	manager,
 	name, 
-	birthDate, 
+	birthDate,
 	photo,
 	notes;
 }
