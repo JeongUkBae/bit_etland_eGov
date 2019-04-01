@@ -21,6 +21,7 @@ prod = (()=>{
 	let carousel =()=>{
 		$(r_cnt).empty();
 		$(compo.shop_Carousel()).appendTo(r_cnt);
+		$(r_cnt).after(compo.prod_post());
 		/*$(compo.shop_Carousel).html(r_cnt);*/
 	};
 	let post =()=>{
