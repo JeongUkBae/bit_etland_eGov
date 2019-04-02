@@ -19,9 +19,9 @@
   <result property="rownum" column="ROWNUM"/>
 
 </resultMap>
-  <select id="selectCustomer" resultMap="result">
-    SELECT *
-    FROM CUSTOMERS 
+  <select id="selectCustomer" parameterType="com.bit_etland.web.cust.Customer">
+    SELECT C.*
+    FROM CUSTOMERS C
     WHERE CUSTOMER_ID LIKE #{customerID}
 	 	<if test="password != null"> 
     <!-- 	<if test="attr=='password'"> -->
