@@ -47,9 +47,8 @@ public class CustController {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	@GetMapping("/customers/page/{num}")
-	public List<?> list(
+	public Map<?,?> list(
 			@PathVariable String num) {
 		logger.info("======= list 진입 ======");
 		map.clear();
@@ -60,8 +59,11 @@ public class CustController {
 		pxy.carryOut(map);
 		IFunction i = (Object o) -> custMap.selectCustomers(pxy);
 		List<?> ls = (List<?>) i.apply(pxy);
-	
-		return ls;
+		map.clear();
+		map.put("ls", ls);
+		map.put("pxy", pxy);
+				  
+		return map;
 	}
 
 	

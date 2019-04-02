@@ -4,7 +4,7 @@ cust = (()=>{
 		 _= $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
-	      prdjs = js+'/prd/prd.js';
+	      prddjs = js+'/prd/prod.js';
 	      custjs = js+'/customer/cust.js';
 	      empjs = js+'/employee/emp.js';
 	      r_cnt = '#right_content';
@@ -34,6 +34,7 @@ cust = (()=>{
 		});
 	};
 	let cust_navi =()=>{
+		setpath();
 		let arr = [
 			{val:'마이페이지', name:'nav_mypage'},
 			{val:'정보수정', name:'nav_update'},
@@ -67,7 +68,7 @@ cust = (()=>{
 						$('.nav li[name=nav_update]').click(e=>{
 							
 							e.preventDefault();
-							/*updateE();*/
+
 						});
 
 						break;
@@ -81,11 +82,10 @@ cust = (()=>{
 						
 						break;
 					case 'nav_shop' : 
-						alert('쇼핑몰 클릭 ');
-						prod.init();
-						
-						$('.nav li[type=nav_shop]').click(e=>{
+						$('#nav_shop').click(e=>{
 							e.preventDefault();
+							alert('쇼핑몰 클릭');
+							prod.carousel();
 						});
 						
 						break;
@@ -169,14 +169,21 @@ cust = (()=>{
 	    	
 	    	});
 		
-
-    	
 	};
+	
+	
 	let list = ()=>{
 		setpath();
 		alert('cust list 접근');
 		$.getJSON(_+'/customers/page/1',d=>{
-			let html = '<table><tr><th>No.</th>'
+			$(r_cnt).empty();
+			$('<div class="grid-item" id="cust_lst">'
+					+'<h1><font style="font-size: 30px">사원 리스트</font>'
+					+'</h1>'
+				    +'</div>'
+				    +'<div class="grid-item" id="content_2"></div>')
+				    .appendTo('#right_content');
+			let table = '<table><tr><th>No.</th>'
 				+'<th>아이디</th>'
 				+'<th>이름</th>'
 				+'<th>생년월일</th>'
@@ -185,8 +192,8 @@ cust = (()=>{
 				+'<th>주소</th>'
 				+'<th>우편번호</th>'
 				+'</tr>'
-			$.each(d,(i,j)=>{
-				html += '<tr><td>'+j.rownum+'</td>'
+			$.each(d.ls,(i,j)=>{
+				table += '<tr><td>'+j.rownum+'</td>'
 				+'<td>'+j.customerID+'</td>'
 				+'<td>'+j.customerName+'</td>'
 				+'<td>'+j.ssn+'</td>'
@@ -197,21 +204,67 @@ cust = (()=>{
 				+'</tr>'
 				
 			});
-			html += '</table>'
-			  +'<div class="container">'
-			  +'<ul class="pagination">'
-			  	+'<li class="previous"><a href="#"><</a></li>'
-			    +'<li class="active"><a href="#">1</a></li>'
-			    +'<li><a href="#">2</a></li>'
-			    +'<li><a href="#">3</a></li>'
-			    +'<li><a href="#">4</a></li>'
-			    +'<li><a href="#">5</a></li>'
-			    +'<li class="next"><a href="#">></a></li>'
-			  +'</ul>'
-			+'</div>'
+			table += '</table>'
 				
-				$(r_cnt).html(html);
+			$(table).attr('id','cust_tab')
+				.css({'font-family':'arial, sans-serif',
+						'border-collapse':'collapse',
+						'width':'100%',
+						'text-align': 'center',
+						'display': 'inline-block'})
+				.addClass('pagination center')
+				.appendTo('#cust_lst');
+			$('<div id=pagination></div>').appendTo('#cust_tab');
+			alert('???'+d.pxy.pageNum);
+			if(d.pxy.prevBlock===d.pxy.pageNum){
+				$('<a href="#">&laquo;</a>')
+				.appendTo('#pagination');
+			}else{
+				let i=0;
+				for(i=1; i<=d.pxy.pageSize; i++){
+					$('<a href="#"class="page active">'+i+'</a>').appendTo('#pagination');
+				}
+				$('<a href="#">&raquo;</a>')
+				.appendTo('#pagination');
+			};
+		/*		for(i=0; i<5; i++){
+					if(d.pxy.pageNum===d.pxy.startRow){
+						$('<a href="#"class="page active">'+d.pxy.pageNum+'</a>').appendTo('#pagination');
+					}else{
+						
+					}
+						
+
+				}*/
+			
+			
+			
+				
 			/*
+			 * <div style="height: 50px"></div>
+   <div class="center">
+     <div class="pagination">
+     <form id="form" name="form">
+    <c:if test="${pagination.existPrev}">
+         <a href='${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.prevBlock}'>&laquo;</a>
+     </c:if>
+     <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" varStatus="status">
+     <c:choose>
+       <c:when test="${pagination.pageNum eq status.index}" >
+           <a href="#"class='page active'>${status.index}</a>
+       </c:when>
+       <c:otherwise>
+           <a href="#"class='page'>${status.index}</a>
+       </c:otherwise>
+     </c:choose>
+     </c:forEach>
+     <c:if test="${pagination.existNext}">
+       <a href='${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.nextBlock}' >&raquo;</a>
+     </c:if>
+     </form>
+     </div>
+   </div>
+			 * 
 			 * @charset "UTF-8";
 					#cust_tab {
 					font-family: arial, sans-serif;

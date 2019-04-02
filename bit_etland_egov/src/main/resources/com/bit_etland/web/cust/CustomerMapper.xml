@@ -3,8 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bit_etland.web.cust.CustomerMapper">
-  <!-- customerID, customerName, password, ssn, phone,
-	photo, city, address, postalcode ; -->
 	
 <resultMap id="result" type="hashmap">
   <id property="customerID" column="CUSTOMER_ID" />
@@ -19,16 +17,21 @@
   <result property="rownum" column="ROWNUM"/>
 
 </resultMap>
-  <select id="selectCustomer" parameterType="com.bit_etland.web.cust.Customer">
-    SELECT C.*
+  <select id="selectCustomer" resultType="com.bit_etland.web.cust.Customer">
+    SELECT CUSTOMER_ID customerID,
+        	CUSTOMER_NAME customerName, 
+        	PASSWORD, 
+        	SSN, 
+        	PHONE,
+        	PHOTO, 
+        	CITY, 
+        	ADDRESS, 
+        	POSTALCODE
     FROM CUSTOMERS C
     WHERE CUSTOMER_ID LIKE #{customerID}
 	 	<if test="password != null"> 
-    <!-- 	<if test="attr=='password'"> -->
     		AND PASSWORD LIKE #{password}
      	</if> 
-
-
   </select>
     <select id="selectCustomers" resultMap="result"
     	parameterType="com.bit_etland.web.cmm.Proxy">

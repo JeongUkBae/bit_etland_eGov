@@ -4,13 +4,14 @@ emp =(()=>{
 		 _= $.ctx();
 	      js = $.js();
 	      compojs = js+'/component/compo.js';
-	      prdjs = js+'/prd/prd.js';
+	      prdjs = js+'/prod/prod.js';
 	      custjs = js+'/customer/cust.js';
 	      r_cnt = '#right_content';
 	      l_cnt = '#left_content';
 		
 	};
 	let init =()=>{
+		setpath();
 		onCreate();
 	};
 	let onCreate =()=>{
@@ -28,6 +29,7 @@ emp =(()=>{
 	상품 목록
 	상품 통계*/
 	let emp_navi =()=>{
+		setpath();
 		let arr = [
 			{val:'고객 목록', name:'cust_list'},
 			{val:'상품 등록', name:'prd_rest'},
@@ -51,7 +53,13 @@ emp =(()=>{
 						alert('고객목록 클릭');
 						break;
 					case 'prd_rest': 
-						alert('상품등록 클릭');
+						$('#prd_rest').click(e=>{
+							e.preventDefault();
+							alert('상품등록 클릭');
+							prod.init();
+						});
+						
+						
 						break;
 					case 'prd_list': 
 						alert('상품목록 클릭');

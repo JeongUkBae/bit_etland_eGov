@@ -207,7 +207,7 @@ auth = (()=>{
     let access =()=>{
     	let ok = confirm('사원 입니까?');
     	if(ok){
-    		let emp_no = prompt('사원번호를 입력하세요.')
+    		let emp_no = prompt('사원번호를 입력하세요.');
     		$.getJSON(_+'/Employees',d=>{
 	    		if(emp_no==d.employeeID){
 	    			// 이름 입력창을 그린다. 
