@@ -48,7 +48,7 @@ public void carryOut(Map<?,?> paramMap) {
 				pageCount++; 
 			}
 			System.out.println("전체 페이지수: "+pageCount); 
-			startRow = (pageNum -1) *pageSize + 1; 
+			startRow = (pageNum -1) *pageSize; // MySQL은 인덱스 처리해서 +1 삭제
 			System.out.println("스타트로우: "+startRow); 
 			endRow = (totalcount > pageNum * pageSize)? pageNum * pageSize: pageCount;
 			System.out.println("엔드로우: "+endRow);

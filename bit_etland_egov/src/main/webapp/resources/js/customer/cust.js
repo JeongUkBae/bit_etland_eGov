@@ -6,19 +6,20 @@ cust = (()=>{
 	      compojs = js+'/component/compo.js';
 	      prdjs = js+'/prd/prd.js';
 	      custjs = js+'/customer/cust.js';
+	      empjs = js+'/employee/emp.js';
 	      r_cnt = '#right_content';
 	      l_cnt = '#left_content';
 		
 	};
 	
-	let init =()=>{
-		setpath()
-		onCreate();
+	let init =(x)=>{
+		setpath();
+		onCreate(x);
 	};
-	let onCreate =()=>{
-		setContentView();
+	let onCreate =(x)=>{
+		setContentView(x);
 	};
-	let setContentView =()=>{
+	let setContentView =(x)=>{
 		$.getScript(compojs,()=>{
 			myPage(x);
 			$('div button[type=submit]').click(e=>{
@@ -27,84 +28,87 @@ cust = (()=>{
 				e.preventDefault();
 			});
 			$('#left_content ul').empty();
-			let arr = [
-				{val:'마이페이지', name:'nav_mypage'},
-				{val:'정보수정', name:'nav_update'},
-				{val:'회원탈퇴', name:'nav_delete'},
-				{val:'쇼핑몰', name:'nav_shop'},
-				{val:'구매내역', name:'nav_history'},
-				{val:'장바구니', name:'nav_basket'}
-				];
-			$.each(arr,(i,j)=>{
-				$('<li><a href="#">'+j.val+'</a></li>')
-					.attr('name',j.name)
-					.attr('id',j.name)
-					.addClass('cursor')
-					.appendTo('#left_content ul')
-					.click(function(){
-						let that = $(this).attr('name');
-						$(this).addClass('active');
-						$(this).siblings().removeClass('active');
-						switch(that){
-						case 'nav_mypage' : 
-							alert('마이페이지 클릭!')
-							$('.nav li[name=nav_mypage]').click(e=>{
-							
-								e.preventDefault();
-								/*updateE();*/
-							});
-
-							break;
-						case 'nav_update' : 
-							alert('회원수정 클릭!')
-							$('.nav li[name=nav_update]').click(e=>{
-								
-								e.preventDefault();
-								/*updateE();*/
-							});
-
-							break;
-						case 'nav_delete' : 
-							alert('회원탈퇴 클릭 ')
-							$('.nav li[type=nav_delete]').click(e=>{
-								e.preventDefault();
-								
-								
-							});
-							
-							break;
-						case 'nav_shop' : 
-							alert('쇼핑몰 클릭 ');
-							prod.init();
-							
-							$('.nav li[type=nav_shop]').click(e=>{
-								e.preventDefault();
-							});
-							
-							break;
-						case 'nav_history' : 
-							alert('주문내역 클릭 ')
-							$('.nav li[type=nav_history]').click(e=>{
-								e.preventDefault();
-								
-
-							});
-							break;
-					
-						case 'nav_basket' : 
-							alert('장바구니 클릭 ')
-							$('.nav li[type=nav_basket]').click(e=>{
-								e.preventDefault();
-								
-
-							});
-							break;
-						}
-					});
-			}); //navi_end
+			cust_navi();
 			$('#nav_mypage').addClass('active');
 			
 		});
+	};
+	let cust_navi =()=>{
+		let arr = [
+			{val:'마이페이지', name:'nav_mypage'},
+			{val:'정보수정', name:'nav_update'},
+			{val:'회원탈퇴', name:'nav_delete'},
+			{val:'쇼핑몰', name:'nav_shop'},
+			{val:'구매내역', name:'nav_history'},
+			{val:'장바구니', name:'nav_basket'}
+			];
+		$.each(arr,(i,j)=>{
+			$('<li><a href="#">'+j.val+'</a></li>')
+				.attr('name',j.name)
+				.attr('id',j.name)
+				.addClass('cursor')
+				.appendTo('#left_content ul')
+				.click(function(){
+					let that = $(this).attr('name');
+					$(this).addClass('active');
+					$(this).siblings().removeClass('active');
+					switch(that){
+					case 'nav_mypage' : 
+						alert('마이페이지 클릭!')
+						$('.nav li[name=nav_mypage]').click(e=>{
+						
+							e.preventDefault();
+							/*updateE();*/
+						});
+
+						break;
+					case 'nav_update' : 
+						alert('회원수정 클릭!')
+						$('.nav li[name=nav_update]').click(e=>{
+							
+							e.preventDefault();
+							/*updateE();*/
+						});
+
+						break;
+					case 'nav_delete' : 
+						alert('회원탈퇴 클릭 ')
+						$('.nav li[type=nav_delete]').click(e=>{
+							e.preventDefault();
+							
+							
+						});
+						
+						break;
+					case 'nav_shop' : 
+						alert('쇼핑몰 클릭 ');
+						prod.init();
+						
+						$('.nav li[type=nav_shop]').click(e=>{
+							e.preventDefault();
+						});
+						
+						break;
+					case 'nav_history' : 
+						alert('주문내역 클릭 ')
+						$('.nav li[type=nav_history]').click(e=>{
+							e.preventDefault();
+							
+
+						});
+						break;
+				
+					case 'nav_basket' : 
+						alert('장바구니 클릭 ')
+						$('.nav li[type=nav_basket]').click(e=>{
+							e.preventDefault();
+							
+
+						});
+						break;
+					}
+				});
+		}); //navi_end
 	};
 
 	let myPage =(x)=>{
@@ -172,20 +176,112 @@ cust = (()=>{
 		setpath();
 		alert('cust list 접근');
 		$.getJSON(_+'/customers/page/1',d=>{
-			$(r_cnt).html(compo.list);
+			let html = '<table><tr><th>No.</th>'
+				+'<th>아이디</th>'
+				+'<th>이름</th>'
+				+'<th>생년월일</th>'
+				+'<th>성별</th>'
+				+'<th>전화</th>'
+				+'<th>주소</th>'
+				+'<th>우편번호</th>'
+				+'</tr>'
 			$.each(d,(i,j)=>{
-				$('<tr><td id="custIndex'+i+'">'+i+'</td>'
-			    +'<td class="custID'+i+'">'+j.customerID+'</td>'
-			    +'<td class="custName'+i+'">'+j.customerName+'</td>'
-			    +'<td class="ssn'+i+'">'+j.ssn+'</td>'
-			    +'<td class="ssn_'+i+'">'+'남'+'</td>'
-			    +'<td class="custPhone'+i+'">'+j.phone+'</td>'
-			    +'<td class="custCity'+i+'">'+j.city+'</td>'
-			    +'<td class="custAdd'+i+'">'+j.address+'</td>'
-			    +'<td class="custPostal'+i+'">'+j.postalcode+'</td></tr>').appendTo('#cust_content');
-
+				html += '<tr><td>'+j.rownum+'</td>'
+				+'<td>'+j.customerID+'</td>'
+				+'<td>'+j.customerName+'</td>'
+				+'<td>'+j.ssn+'</td>'
+				+'<td>'+'남'+'</td>'
+				+'<td>'+j.phone+'</td>'
+				+'<td>'+j.address+'</td>'
+				+'<td>'+j.postalcode+'</td>'
+				+'</tr>'
+				
 			});
-			
+			html += '</table>'
+			  +'<div class="container">'
+			  +'<ul class="pagination">'
+			  	+'<li class="previous"><a href="#"><</a></li>'
+			    +'<li class="active"><a href="#">1</a></li>'
+			    +'<li><a href="#">2</a></li>'
+			    +'<li><a href="#">3</a></li>'
+			    +'<li><a href="#">4</a></li>'
+			    +'<li><a href="#">5</a></li>'
+			    +'<li class="next"><a href="#">></a></li>'
+			  +'</ul>'
+			+'</div>'
+				
+				$(r_cnt).html(html);
+			/*
+			 * @charset "UTF-8";
+					#cust_tab {
+					font-family: arial, sans-serif;
+					border-collapse: collapse;
+					width: 100%;
+					}
+					#cust_tab td, th {
+					border: 1px solid #dddddd;
+					text-align: left;
+					padding: 8px;
+					}
+					#cust_tab tr:nth-child(even) {
+					background-color: #dddddd;
+					}
+					.center {
+					text-align: center;
+					}
+					.pagination {
+					display: inline-block;
+					}
+					.pagination a {
+					color: black;
+					float: left;
+					padding: 8px 16px;
+					text-decoration: none;
+					transition: background-color .3s;
+					border: 1px solid #ddd;
+					margin: 0 4px;
+					}
+					.pagination a.active {
+					background-color: #4CAF50;
+					color: white;
+					border: 1px solid #4CAF50;
+					}
+					.pagination a:hover:not(.active) {
+					  background-color: #ddd;
+					}
+					
+					.grid-item2{
+					   display: grid;
+					    grid-template-columns: auto auto auto auto;
+					    background-color: #F7BE81;
+					    padding: 5px;
+					}
+					.grid-item2 {
+					background-color: rgba(255, 255, 255, 0.8);
+					border: 1px solid rgba(0, 0, 0, 0.8);
+					padding: 5px;
+					font-size: 30px;
+					text-align: center;
+					}
+					#itemd_1{
+					  grid-column-start: 1;
+					  grid-column-end: 4;
+					}
+					#itemd_2{
+					  grid-column-start: 4;
+					  grid-column-end: 5;
+					}
+					#itemd_3{
+					  grid-column-start: 1;
+					  grid-column-end: 5;
+					}
+			 * 
+			 * */
+			$.getScript(empjs,()=>{
+				emp.init();
+				
+			});
+				
 		});
 		
 	};

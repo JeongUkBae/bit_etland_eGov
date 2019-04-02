@@ -49,7 +49,7 @@ public class CustController {
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/customers/page/{num}")
-	public List<Customer> list(
+	public List<?> list(
 			@PathVariable String num) {
 		logger.info("======= list 진입 ======");
 		map.clear();
@@ -59,7 +59,7 @@ public class CustController {
 		map.put("total_count", "10");
 		pxy.carryOut(map);
 		IFunction i = (Object o) -> custMap.selectCustomers(pxy);
-		List<Customer> ls = (List<Customer>) i.apply(pxy);
+		List<?> ls = (List<?>) i.apply(pxy);
 	
 		return ls;
 	}

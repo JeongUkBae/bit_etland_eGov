@@ -6,6 +6,7 @@ auth = (()=>{
 	let rightCtnt = $('#right_content');
 	*/
 	let _,js,compojs,r_cnt, l_cnt;
+	const ERR_MSG = '호출하는 JS 파일을 찾지 못하였습니다.'
 	let init =()=>{
 		
 		  _= $.ctx();
@@ -32,12 +33,8 @@ auth = (()=>{
 			});
 			
 			$('#left_content ul').empty();
-			let arr = [
-				{val:'회원 로그인', name:'login'},
-				{val:'회원 가입', name:'join'},
-				{val:'사원 로그인', name:'access'},
-				{val:'사원 가입', name:'registe'}];
-			$.each(arr,(i,j)=>{
+
+			$.each(nav(),(i,j)=>{
 				
 				$('<li><a href="#">'+j.val+'</a></li>')
 					.attr('name',j.name)
@@ -93,8 +90,15 @@ auth = (()=>{
 		
 		})
 		.fail(()=>{
-			alert('component/compo.js 를 찾지 못했습니다.');
+			alert(ERR_MSG);
 		});
+	};
+	let nav = ()=>{
+		return arr = [
+			{val:'회원 로그인', name:'login'},
+			{val:'회원 가입', name:'join'},
+			{val:'사원 로그인', name:'access'},
+			{val:'사원 가입', name:'registe'}];
 	};
 	let login =()=>{	
 			let data = {customerID:$('form input[name=uname]').val(), 
@@ -206,7 +210,6 @@ auth = (()=>{
     		let emp_no = prompt('사원번호를 입력하세요.')
     		$.getJSON(_+'/Employees',d=>{
 	    		if(emp_no==d.employeeID){
-	    			alert('사원인증');
 	    			// 이름 입력창을 그린다. 
 	    			$('.container').empty();
 	    			$('#access_btn').empty();

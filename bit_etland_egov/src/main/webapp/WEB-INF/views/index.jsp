@@ -50,7 +50,7 @@
 <div id="container" class="container-fluid">
   <div id="full_content" class="row content">
     <div id="left_content" class="col-sm-3 sidenav">
-      <h4>John's Blog</h4>
+      <h4 id="navi_name">John's Blog</h4>
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="">Home</a></li>
         <li><a href="#">Friends</a></li>

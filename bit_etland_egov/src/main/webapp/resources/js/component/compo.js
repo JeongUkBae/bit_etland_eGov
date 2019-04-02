@@ -379,6 +379,21 @@ compo = {
 			  +'</div>	'
 			  +'</div>'
 			
+		},
+		pagenation :()=>{
+			return '<div class="container">'
+				  +'<h2>Pagination - Active State</h2>'
+				  +'<p>Add class .active to let the user know which page he/she is on:</p>'
+				  +'<ul class="pagination">'
+				  	+'<li class="previous"><a href="#"><</a></li>'
+				    +'<li><a href="#">1</a></li>'
+				    +'<li class="active"><a href="#">2</a></li>'
+				    +'<li><a href="#">3</a></li>'
+				    +'<li><a href="#">4</a></li>'
+				    +'<li><a href="#">5</a></li>'
+				    +'<li class="next"><a href="#">></a></li>'
+				  +'</ul>'
+				+'</div>'
 		}
 		
 	
