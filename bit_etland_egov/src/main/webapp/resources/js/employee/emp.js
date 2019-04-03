@@ -56,13 +56,19 @@ emp =(()=>{
 						$('#prd_rest').click(e=>{
 							e.preventDefault();
 							alert('상품등록 클릭');
-							prod.init();
+							prod.prod_post();
 						});
-						
 						
 						break;
 					case 'prd_list': 
-						alert('상품목록 클릭');
+						$('#prd_list').click(e=>{
+							e.preventDefault();
+							alert('상품목록 클릭');
+							prod.prod_list(1);
+							
+						});
+						
+						
 						break;
 					case 'prd_update':
 						alert('상품수정 클릭');

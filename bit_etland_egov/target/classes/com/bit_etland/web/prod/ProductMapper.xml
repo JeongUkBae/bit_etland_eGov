@@ -2,23 +2,20 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bit_etland.web.cust.CustomerMapper">
+<mapper namespace="com.bit_etland.web.prod.ProductMapper">
 	
 <resultMap id="result" type="hashmap">
-  <id property="customerID" column="CUSTOMER_ID" />
-  <result property="customerName" column="CUSTOMER_NAME"/>
-  <result property="password" column="PASSWORD"/>
-  <result property="ssn" column="SSN"/>
-  <result property="phone" column="PHONE"/>
-  <result property="photo" column="PHOTO"/>
-  <result property="city" column="CITY"/>
-  <result property="address" column="ADDRESS"/>
-  <result property="postalcode" column="POSTALCODE"/>
-  <result property="rownum" column="ROWNUM"/>
+  <id property="productID" column="PRODUCT_ID" />
+  <result property="productName" column="PRODUCT_NAME"/>
+  <result property="supplierID" column="SUPPLIER_ID"/>
+  <result property="categoryID" column="CATEGORY_ID"/>
+  <result property="unit" column="UNIT"/>
+  <result property="price" column="PRICE"/>
+  <result property="productImage" column="PHOTO"/>
 
 </resultMap>
-  <select id="selectCustomer" resultType="com.bit_etland.web.cust.Customer">
-    SELECT CUSTOMER_ID customerID,
+  <select id="selectCustomer" resultType="com.bit_etland.web.prod.Product">	
+<!--     SELECT CUSTOMER_ID customerID,
         	CUSTOMER_NAME customerName, 
         	PASSWORD, 
         	SSN, 
@@ -31,23 +28,23 @@
     WHERE CUSTOMER_ID LIKE #{customerID}
 	 	<if test="password != null"> 
     		AND PASSWORD LIKE #{password}
-     	</if> 
+     	</if>  -->
   </select>
-    <select id="selectCustomers" resultMap="result"
+    <select id="selectProducts" resultMap="result"
     	parameterType="com.bit_etland.web.cmm.Proxy">
 		SELECT @ROWNUM:=@ROWNUM+1 AS rownum,
-		      C.*
-		FROM CUSTOMERS C, (SELECT @ROWNUM:=0) TMP
+		      P.*
+		FROM PRODUCTS P, (SELECT @ROWNUM:=0) TMP
 		ORDER BY rownum DESC
-		LIMIT #{startRow},#{pageSize}
+		LIMIT #{startRow}, #{pageSize}
   </select>
-    <select id="countCustomer" resultType="int">
+    <select id="countProduct" resultType="int">
 		SELECT count(*)
-		FROM CUSTOMERS
+		FROM PRODUCTS
   </select>
   
 
-  <insert id="insertCustomer" parameterType="com.bit_etland.web.cust.Customer"
+  <insert id="insertCustomer" parameterType="com.bit_etland.web.prod.Product"
   			flushCache="true" statementType="PREPARED" timeout="20">
   		  INSERT INTO CUSTOMERS (CUSTOMER_ID,
         					   CUSTOMER_NAME, 
@@ -68,7 +65,7 @@
         						)
   </insert>
 
-    <update id="updateCustomer" parameterType="com.bit_etland.web.cust.Customer" 
+    <update id="updateCustomer" parameterType="com.bit_etland.web.prod.Product" 
     		flushCache="true" statementType="PREPARED" timeout="20"> 
  		UPDATE CUSTOMERS
  			SET PASSWORD = #{password}, 
@@ -80,7 +77,7 @@
  
  	</update>
   
- 	<delete id="deleteCustomer" parameterType="com.bit_etland.web.cust.Customer" 
+ 	<delete id="deleteCustomer" parameterType="com.bit_etland.web.prod.Product" 
  			flushCache="true" statementType="PREPARED" timeout="20"> 
   		DELETE FROM CUSTOMERS WHERE LIKE CUSTOMER_ID LIKE #{customerID}
                                            AND PASSWORD LIKE #{password}	

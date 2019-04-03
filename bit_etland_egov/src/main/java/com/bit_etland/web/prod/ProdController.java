@@ -1,4 +1,4 @@
-package com.bit_etland.web.prb;
+package com.bit_etland.web.prod;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
+import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
+import com.bit_etland.web.cmm.Proxy;
 
 
 @RestController
@@ -24,10 +26,11 @@ public class ProdController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProdController.class);
 	
-	@Autowired Product prd;
+	@Autowired Product prod;
 	@Autowired PrintService ps;
 	@Autowired ProductMapper prdMap;
 	@Autowired Map<String, Object> map;
+	@Autowired Proxy pxy;
 	
 	
 	@PostMapping("/phones")
@@ -42,15 +45,27 @@ public class ProdController {
 	
 
 	@SuppressWarnings("unchecked")
-	@GetMapping("/phones/{id}")
-	public List<Product> list(
-			@PathVariable String page,
-			@RequestBody Map<?,?> param) {
+	@GetMapping("/phones/{page}")
+	public Map<?,?> list(
+			@PathVariable String page) {
 		logger.info("======= list 진입 ======");
-		IFunction i = (Object o) -> prdMap.selectProductsList(param);
-		List<Product> ls = (List<Product>) i.apply(param);
-		ps.accept(ls);
-		return ls;
+		map.clear();
+		map.put("page_num", page);
+		map.put("page_size", "5");
+		ISupplier sup = () -> prdMap.countProduct();
+		map.put("block_size", "5");
+		ps.accept("총 카운터는?"+sup.get());
+		ps.accept("시작값: "+pxy.getStartRow());
+		ps.accept("마지막값: "+pxy.getEndRow());
+		map.put("total_count", sup.get());
+		pxy.carryOut(map);
+		IFunction i = (Object o) -> prdMap.selectProducts(pxy);
+		List<Product> ls = (List<Product>) i.apply(pxy);
+		ps.accept("ps??::"+ls);
+		map.clear();
+		map.put("ls", ls);
+		map.put("pxy", pxy);
+		return map;
 	}
 
 	@PostMapping("/products")

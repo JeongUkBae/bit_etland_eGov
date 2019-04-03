@@ -172,10 +172,11 @@ cust = (()=>{
 	};
 	
 	
-	let list = ()=>{
+	let list = x=>{
 		setpath();
+		alert('x :: '+x)
 		alert('cust list 접근');
-		$.getJSON(_+'/customers/page/1',d=>{
+		$.getJSON(_+'/customers/page/'+x, d=>{
 			$(r_cnt).empty();
 			$('<div class="grid-item" id="cust_lst">'
 					+'<h1><font style="font-size: 30px">사원 리스트</font>'
@@ -214,31 +215,42 @@ cust = (()=>{
 						'display': 'inline-block'})
 				.addClass('pagination center')
 				.appendTo('#cust_lst');
-			$('<div id=pagination></div>').appendTo('#cust_tab');
-			alert('???'+d.pxy.pageNum);
-			if(d.pxy.prevBlock===d.pxy.pageNum){
-				$('<a href="#">&laquo;</a>')
-				.appendTo('#pagination');
-			}else{
-				let i=0;
-				for(i=1; i<=d.pxy.pageSize; i++){
-					$('<a href="#"class="page active">'+i+'</a>').appendTo('#pagination');
-				}
-				$('<a href="#">&raquo;</a>')
-				.appendTo('#pagination');
-			};
-		/*		for(i=0; i<5; i++){
-					if(d.pxy.pageNum===d.pxy.startRow){
-						$('<a href="#"class="page active">'+d.pxy.pageNum+'</a>').appendTo('#pagination');
+			let html = '<div id=pagination>'
+			let pxy = d.pxy;
+			if(pxy.existPrev){
+				$('<a id="laquo">&laquo;</a>').appendTo('#pagination');
+			}
+				let  i= 0;
+				for(i=pxy.startPage; i<=pxy.endPage; i++){
+					if(pxy.pageNum == i){
+						$('<a class="page active">'+i+'</a>')
+						.attr('href',_+'/customers/page/'+i)
+						.appendTo(html)
+						.click(e=>{
+							e.preventDefault();
+							alert('클릭한페이지'+$(this).text());
+							list($(this).text());
+						});
+						
 					}else{
-						
+						$('<a class="page">'+i+'</a>').appendTo(html);
+						$('<a class="page active">'+i+'</a>')
+						.attr('href',_+'/customers/page/'+pxy.nextBlock)
+						.appendTo(html)
+						.click(e=>{
+							e.preventDefault();
+							alert('클릭한페이지'+$(this).text());
+							list($(this).text());
+						});
 					}
-						
-
-				}*/
-			
-			
-			
+				};
+				
+			if(pxy.existNext){
+				$('<a>&raquo;</a>').appendTo('#pagination');
+			}
+			html += '</div>';
+			$(html).appendTo('#content_2');
+	
 				
 			/*
 			 * <div style="height: 50px"></div>

@@ -41,8 +41,12 @@
 		ORDER BY rownum DESC
 		LIMIT #{startRow},#{pageSize}
   </select>
+    <select id="countCustomer" resultType="int">
+		SELECT count(*)
+		FROM CUSTOMERS
+  </select>
+  
 
- 
   <insert id="insertCustomer" parameterType="com.bit_etland.web.cust.Customer"
   			flushCache="true" statementType="PREPARED" timeout="20">
   		  INSERT INTO CUSTOMERS (CUSTOMER_ID,

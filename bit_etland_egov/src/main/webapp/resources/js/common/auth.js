@@ -219,7 +219,7 @@ auth = (()=>{
 	    			if($('#name').val()===d.name){
 	    				//고객명단 그린다.
 	    				$.getScript(custjs,()=>{
-	    					cust.list();
+	    					cust.list('1');
 	    				});
 	    			}else{
 	    				

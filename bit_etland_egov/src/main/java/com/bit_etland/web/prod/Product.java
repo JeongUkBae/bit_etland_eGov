@@ -1,4 +1,4 @@
-package com.bit_etland.web.prb;
+package com.bit_etland.web.prod;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
