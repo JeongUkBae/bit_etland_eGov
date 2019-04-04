@@ -36,6 +36,49 @@ prod = (()=>{
 		setpath();
 		$(r_cnt).empty();
 		$(compo.prod_post_to()).appendTo(r_cnt);
+		$('#prd_post_btn').click(e=>{
+			e.preventDefault();
+
+			 let freebies = [];
+			 $(".checks:checked").each(function(i) {
+				 freebies.push($(this).val());
+			});
+			
+			let pname = $('#product_name').val();
+			let price = $('#price').val();
+			let comment = $('#comment').val();
+			let unit = $('#unit').val();
+			if($.fn.nullChecker([pname,price,comment,unit])){
+				alert('빈칸을 입력해주세요.');
+			}else{
+				alert('성공 널이 아닙니다.');
+			}
+			
+			let data = {categoryID:$('#category_name option:selected').val(),
+						productName:pname,
+						price:price,
+						unit:unit,
+						supplierID:$('#supplier_name').val(),
+						color:$('input[name=color]:checked').val(),
+						freebies:freebies, //라디오에 클래스부여함
+						comment:$('#comment').val()
+			};
+			$.ajax({
+				url:_+'/products',
+				type:'post',
+				data:JSON.stringify(data),
+				dataType:'json',
+				contentType:'application/json',
+				success:d=>{
+					alert('성공');
+
+				},
+				error:e=>{
+					alert('에러');
+				}
+			}) //ajax끝
+		});
+		
 		
 	};
 	

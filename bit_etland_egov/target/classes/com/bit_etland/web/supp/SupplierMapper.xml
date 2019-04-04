@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit_etland.web.supp.SupplierMapper">
+	
+<resultMap id="result" type="hashmap">
+  <id property="supplierID" column="SUPPLIER_ID" />
+  <result property="supplierName" column="SUPPLIER_NAME"/>
+  <result property="contactName" column="CONTACT_NAME"/>
+  <result property="country" column="COUNTRY"/>
+  <result property="address" column="ADDRESS"/>
+  <result property="city" column="CITY"/>
+  <result property="postalCode" column="POSTAL_CODE"/>
+  <result property="phone" column="PHONE"/>
+<!-- supplierID, supplierName, contactName,
+	address, city, postalCode, country, phone -->
+</resultMap>
+
+  <select id="txSupplier" resultType="string" parameterType="com.bit_etland.web.supp.Supplier">	
+     SELECT SUPPLIER_ID 
+     FROM SUPPLIERS 
+     WHERE SUPPLIER_NAME LIKE #{supplierName}
+
+  </select>
+<!--   <select id="selectSuppliers" resultMap="result"
+    	parameterType="com.bit_etland.web.cmm.Proxy">
+		SELECT @ROWNUM:=@ROWNUM+1 AS rownum,
+		      P.*
+		FROM SUPPLIERS P, (SELECT @ROWNUM:=0) TMP
+		ORDER BY rownum DESC
+		LIMIT #{startRow}, #{pageSize}
+  </select>
+  <select id="countSupplier" resultType="int">
+		SELECT count(*)
+		FROM SUPPLIERS
+  </select>
+  
+
+  <insert id="insertSupplier" parameterType="com.bit_etland.web.supp.Supplier"
+  			flushCache="true" statementType="PREPARED" timeout="20">
+  		  INSERT INTO SUPPLIERS (SUPPLIER_ID,
+        					   SUPPLIER_NAME,
+        					   CONTACT_NAME, 
+        					   COUNTRY, 
+        					   ADDRESS,  
+        					   CITY, 
+        					   POSTAL_CODE, 
+        					   PHONE) 
+        				VALUES (#{supplierID},
+        						#{supplierName}, 
+        						#{contactName},
+        						#{country}, 
+        						#{address},
+        						#{city},
+        						#{postalCode},
+        						#{phone}
+        						)
+  </insert>
+
+  <update id="updateSupplier" parameterType="com.bit_etland.web.supp.Supplier" 
+    		flushCache="true" statementType="PREPARED" timeout="20"> 
+ 		UPDATE SUPPLIERS
+ 			SET PASSWORD = #{password}, 
+ 				PHONE = #{phone},
+ 				CITY = #{city},
+ 				ADDRESS = #{address},
+ 				POSTALCODE = #{postalcode} 
+ 		  WHERE SUPPLIER_ID LIKE #{supplierID}
+ 
+ 	</update>
+  
+ 	<delete id="deleteSupplier" parameterType="com.bit_etland.web.supp.Supplier" 
+ 			flushCache="true" statementType="PREPARED" timeout="20"> 
+  		DELETE FROM SUPPLIERS WHERE LIKE CUSTOMER_ID LIKE #{customerID}
+                                           AND PASSWORD LIKE #{password}	
+  			
+  			
+ 	</delete> -->
+</mapper>

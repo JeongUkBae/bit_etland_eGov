@@ -30,8 +30,109 @@ cust = (()=>{
 			$('#left_content ul').empty();
 			cust_navi();
 			$('#nav_mypage').addClass('active');
+			$('#srch_btn').on('click',()=>{
+				let srchword = $('input[type=text]').val();
+				if($.fn.nullChecker(srchword)){
+					alert('빈칸/두자이상 을 입력해주세요.');
+					
+				}else{
+					alert('입력값은?.'+srchword);
+					/*/phones/{phone}/{page}*/
+					let arr = {srchword:srchword,
+								page:'1'}
+					srch(arr);
+				}
+			});
+		});
+	};
+	let srch=(x)=>{
+		setpath();
+		alert('테스트');
+		$.getJSON(_+'/phones/'+x.srchword+'/'+x.page, d=>{
+			alert('getjson시작 '+x.srchword);
+
+			$(r_cnt).empty();
+			$(compo.list()).appendTo(r_cnt);
+			let table ="";
+			let prod_name = [
+				{val:'NO'},
+				{val:'상품번호'},
+				{val:'상품명'},
+				{val:'공급자이름'},
+				{val:'카테고리명'},
+				{val:'수량'},
+				{val:'판매금액'}
+	
+				
+			];
+			$('#cust_content').empty();
+			$.each(prod_name,(i,j)=>{
+				$('<th>'+j.val+'</th>').appendTo('#cust_content');
+			});
+			$.each(d.ls,(i,j)=>{
+				table += '<tr><td>'+j.rownum+'</td>'
+				+'<td>'+j.productID+'</td>'
+				+'<td>'+j.productName+'</td>'
+				+'<td>'+j.supplierID+'</td>'
+				+'<td>'+j.categoryID+'</td>'
+				+'<td>'+j.unit+'</td>'
+				+'<td>'+j.price+'</td>'
+				+'</tr>'
+			});
+			$(table).appendTo('#cust_content');
+			$('#cust_content_2').attr('id','pagination');
+			let pxy = d.pxy;
+			if(pxy.existPrev){
+				$('<a>&laquo;</a>').appendTo('#pagination')
+				.click(function(){
+					let arr3 = {srchword:x.srchword,
+							page:$(this).text()}
+					srch(arr3);
+				});
+			}
+			let i= 0;
+			for(i=pxy.startPage; i<=pxy.endPage; i++){
+				if(pxy.pageNum == i){
+					$('<a class="page active">'+i+'</a>')
+				/*	.attr('href',_+'/phones/'+i)*/
+					.appendTo('#pagination')
+					.click(function(){
+						alert('클릭한페이지'+$(this).text());
+						let arr1 = {srchword:x.srchword,
+								page:$(this).text()}
+						srch(arr1);
+					});
+					
+				}else{
+					$('<a class="page">'+i+'</a>')
+				/*	.attr('href',_+'/phones/'+i)*/
+					.appendTo('#pagination')
+					.click(function(){
+						alert('클릭한페이지'+$(this).text());
+						let arr2 = {srchword:x.srchword,
+								page:$(this).text()}
+						srch(arr2);
+					});
+				}
+			};
+			
+			
+			if(pxy.existNext){
+				$('<a>&raquo;</a>').appendTo('#pagination')
+				.click(function(){
+					let arr3 = {srchword:x.srchword,
+							page:$(this).text()}
+					srch(arr3);
+				});
+				
+			}
+			
+		
+			
+			
 			
 		});
+
 	};
 	let cust_navi =()=>{
 		setpath();
@@ -251,97 +352,7 @@ cust = (()=>{
 			html += '</div>';
 			$(html).appendTo('#content_2');
 	
-				
-			/*
-			 * <div style="height: 50px"></div>
-   <div class="center">
-     <div class="pagination">
-     <form id="form" name="form">
-    <c:if test="${pagination.existPrev}">
-         <a href='${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.prevBlock}'>&laquo;</a>
-     </c:if>
-     <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" varStatus="status">
-     <c:choose>
-       <c:when test="${pagination.pageNum eq status.index}" >
-           <a href="#"class='page active'>${status.index}</a>
-       </c:when>
-       <c:otherwise>
-           <a href="#"class='page'>${status.index}</a>
-       </c:otherwise>
-     </c:choose>
-     </c:forEach>
-     <c:if test="${pagination.existNext}">
-       <a href='${ctx}/customer.do?cmd=cust_list&page=list&page_num=${pagination.nextBlock}' >&raquo;</a>
-     </c:if>
-     </form>
-     </div>
-   </div>
-			 * 
-			 * @charset "UTF-8";
-					#cust_tab {
-					font-family: arial, sans-serif;
-					border-collapse: collapse;
-					width: 100%;
-					}
-					#cust_tab td, th {
-					border: 1px solid #dddddd;
-					text-align: left;
-					padding: 8px;
-					}
-					#cust_tab tr:nth-child(even) {
-					background-color: #dddddd;
-					}
-					.center {
-					text-align: center;
-					}
-					.pagination {
-					display: inline-block;
-					}
-					.pagination a {
-					color: black;
-					float: left;
-					padding: 8px 16px;
-					text-decoration: none;
-					transition: background-color .3s;
-					border: 1px solid #ddd;
-					margin: 0 4px;
-					}
-					.pagination a.active {
-					background-color: #4CAF50;
-					color: white;
-					border: 1px solid #4CAF50;
-					}
-					.pagination a:hover:not(.active) {
-					  background-color: #ddd;
-					}
-					
-					.grid-item2{
-					   display: grid;
-					    grid-template-columns: auto auto auto auto;
-					    background-color: #F7BE81;
-					    padding: 5px;
-					}
-					.grid-item2 {
-					background-color: rgba(255, 255, 255, 0.8);
-					border: 1px solid rgba(0, 0, 0, 0.8);
-					padding: 5px;
-					font-size: 30px;
-					text-align: center;
-					}
-					#itemd_1{
-					  grid-column-start: 1;
-					  grid-column-end: 4;
-					}
-					#itemd_2{
-					  grid-column-start: 4;
-					  grid-column-end: 5;
-					}
-					#itemd_3{
-					  grid-column-start: 1;
-					  grid-column-end: 5;
-					}
-			 * 
-			 * */
+	
 			$.getScript(empjs,()=>{
 				emp.init();
 				

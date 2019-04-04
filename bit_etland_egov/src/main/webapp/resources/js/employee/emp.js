@@ -22,6 +22,11 @@ emp =(()=>{
 			$('#left_content ul').empty();
 			$('<h2 id="menu-name">bit_etland</h2>').html('#menu-name');
 			emp_navi();
+		
+				
+	
+		}).fail(()=>{
+			alert(WHEN_ERR)
 		});
 	};
 /*	고객 목록
@@ -53,12 +58,8 @@ emp =(()=>{
 						alert('고객목록 클릭');
 						break;
 					case 'prd_rest': 
-						$('#prd_rest').click(e=>{
-							e.preventDefault();
 							alert('상품등록 클릭');
 							prod.prod_post();
-						});
-						
 						break;
 					case 'prd_list': 
 						$('#prd_list').click(e=>{
@@ -83,6 +84,10 @@ emp =(()=>{
 					
 			});
 		});
+		
+	};
+	let srch=()=>{
+		
 		
 	};
 	return {init:init}

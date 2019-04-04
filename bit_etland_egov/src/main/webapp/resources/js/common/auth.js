@@ -33,7 +33,7 @@ auth = (()=>{
 			});
 			
 			$('#left_content ul').empty();
-
+			
 			$.each(nav(),(i,j)=>{
 				
 				$('<li><a href="#">'+j.val+'</a></li>')
@@ -94,6 +94,7 @@ auth = (()=>{
 		});
 	};
 	let nav = ()=>{
+
 		return arr = [
 			{val:'회원 로그인', name:'login'},
 			{val:'회원 가입', name:'join'},

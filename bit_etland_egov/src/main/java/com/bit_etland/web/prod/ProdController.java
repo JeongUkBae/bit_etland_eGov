@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bit_etland.web.cate.Category;
+import com.bit_etland.web.cate.CategoryMapper;
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
 import com.bit_etland.web.cmm.ISupplier;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Proxy;
+import com.bit_etland.web.supp.Supplier;
+import com.bit_etland.web.supp.SupplierMapper;
 
 
 @RestController
@@ -31,17 +36,10 @@ public class ProdController {
 	@Autowired ProductMapper prdMap;
 	@Autowired Map<String, Object> map;
 	@Autowired Proxy pxy;
-	
-	
-	@PostMapping("/phones")
-	public Product login(
-		@PathVariable String userid,
-		@RequestBody Product param) {
-		logger.info("======= cust login 진입 =======");
-		IFunction i = (Object o) -> prdMap.selectProduct(param);
-		
-		return (Product) i.apply(param);
-	}
+	@Autowired CategoryMapper cateMap;
+	@Autowired SupplierMapper suppMap;
+	@Autowired Category cate;
+	@Autowired Supplier supp;
 	
 
 	@SuppressWarnings("unchecked")
@@ -67,14 +65,65 @@ public class ProdController {
 		map.put("pxy", pxy);
 		return map;
 	}
+	@SuppressWarnings("unchecked")
+	@GetMapping("/phones/{srchword}/{page}")
+	public Map<?,?> srchList(
+			@PathVariable String srchword,
+			@PathVariable String page) {
+		logger.info("======= srch list 진입 ======");
+		map.clear();
+		map.put("page_num", page);
+		map.put("page_size", "5");
+		String word = "%"+srchword+"%"; 
+		map.put("searchWord", word );
+		IFunction sup = (o) -> prdMap.countsrchs((String) o);
+		map.put("block_size", "5");
+		ps.accept("총 카운터는?"+sup.apply(word));
+		ps.accept("시작값: "+pxy.getStartRow());
+		ps.accept("마지막값: "+pxy.getEndRow());
+		map.put("total_count", sup.apply(word));
+		pxy.carryOut(map);
+		ps.accept(page.toString());
+		ps.accept(srchword.toString());
+		IFunction f = (Object o) -> prdMap.txProducts((Proxy) o);
+		ps.accept("과연?:::::"+pxy.getSearchWord());
+		List<Product> ls = (List<Product>) f.apply(pxy);
+		ps.accept("이건과연??:::"+ls.toString());
+		map.clear();
+		map.put("ls", ls);
+		ps.accept("이제제발!!:::"+ls);
+		map.put("pxy", pxy);
+		return map;
+	}
+	@PostMapping("/phones")
+	public Product login(
+		@PathVariable String userid,
+		@RequestBody Product param) {
+		logger.info("======= cust login 진입 =======");
+		IFunction i = (Object o) -> prdMap.selectProduct(param);
+		
+		return (Product) i.apply(param);
+	}
+	
 
+	@Transactional
 	@PostMapping("/products")
-	public Map<String, Object> join(
+	public Map<String, Object> regist(
 			@RequestBody Product param) {
 		logger.info("======= cust join  진입 =======");
-		ps.accept(param.toString());
-		IConsumer i = (Object o)->prdMap.insertProduct(param);
-		i.accept(param);
+		List<String> ls = param.getFreebies();
+		ps.accept("리스트?::"+ls);
+		ps.accept("리스트?::"+param.toString());
+		IFunction f = s -> cateMap.txCategory((String)s);
+		IFunction f2 = s -> suppMap.txSupplier((String)s);
+		String cateID = (String) f.apply(param.getCategoryID());
+		String suppID = (String) f2.apply(param.getSupplierID());
+		param.setCategoryID(cateID);
+		param.setSupplierID(suppID);
+		ps.accept(param.getCategoryID());
+		ps.accept(param.getProductID());
+/*		IConsumer i = o -> prdMap.insertProduct((Product)o);
+		i.accept(param);*/
 		map.clear();
 		map.put("msg", "SUCCESS");
 		return map;

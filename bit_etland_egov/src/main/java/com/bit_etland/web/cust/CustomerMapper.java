@@ -9,7 +9,7 @@ import com.bit_etland.web.cmm.Proxy;
 
 @Repository
 public interface CustomerMapper {
-	public void insertCustomer(Customer cust);
+		public void insertCustomer(Customer cust);
 		
 		public List<Customer> selectAllCustomersList(Map<?,?> map);
 		public List<?> selectCustomers(Proxy pxy);

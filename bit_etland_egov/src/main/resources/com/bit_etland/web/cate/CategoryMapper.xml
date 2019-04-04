@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit_etland.web.cate.CategoryMapper">
+	
+<resultMap id="result" type="hashmap">
+  <id property="categoryID" column="CATEGORY_ID" />
+  <result property="categoryName" column="CATEGORY_NAME"/>
+  <result property="description" column="DESCRIPTION"/>
+
+<!-- categoryID, categoryName, description; -->
+</resultMap>
+  <select id="txCategory" resultType="string" parameterType="com.bit_etland.web.cate.Category">
+    SELECT CATEGORY_ID 
+    FROM CATEGORIES 
+    WHERE CATEGORY_NAME LIKE #{categoryName}
+  </select>
+  <select id="selectCategorys" resultMap="result"
+    	parameterType="com.bit_etland.web.cmm.Proxy">
+		SELECT @ROWNUM:=@ROWNUM+1 AS rownum,
+		      C.*
+		FROM CATEGORIES C, (SELECT @ROWNUM:=0) TMP
+		ORDER BY rownum DESC
+		LIMIT #{startRow},#{pageSize}
+  </select>
+ <!--  <select id="countCategory" resultType="int">
+		SELECT count(*)
+		FROM CATEGORIES
+  </select>
+  
+
+  <insert id="insertCategory" parameterType="com.bit_etland.web.cate.Category"
+  			flushCache="true" statementType="PREPARED" timeout="20">
+  		  INSERT INTO CATEGORIES (CATEGORY_ID,
+        					   CATEGORY_NAME, 
+        					   DESCRIPTION) 
+        				VALUES (#{categoryID},
+        						#{categoryName}, 
+        						#{"description"}
+        						)
+  </insert>
+
+    <update id="updateCustomer" parameterType="com.bit_etland.web.cate.Category" 
+    		flushCache="true" statementType="PREPARED" timeout="20"> 
+ 		UPDATE CATEGORIES
+ 			SET CATEGORY_NAME = #{categoryName}, 
+ 				DESCRIPTION = #{description}
+ 		  WHERE CATEGORY_ID LIKE #{categoryID}
+ 
+ 	</update>
+  
+ 	<delete id="deleteCustomer" parameterType="com.bit_etland.web.cate.Category" 
+ 			flushCache="true" statementType="PREPARED" timeout="20"> 
+  		DELETE FROM CATEGORIES WHERE LIKE CATEGORY_ID LIKE #{categoryID}
+                                           AND CATEGORY_NAME LIKE #{categoryName}	
+  			
+  			
+ 	</delete> -->
+</mapper>

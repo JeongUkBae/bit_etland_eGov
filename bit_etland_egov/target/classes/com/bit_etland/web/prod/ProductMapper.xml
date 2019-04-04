@@ -14,8 +14,8 @@
   <result property="productImage" column="PHOTO"/>
 
 </resultMap>
-  <select id="selectCustomer" resultType="com.bit_etland.web.prod.Product">	
-<!--     SELECT CUSTOMER_ID customerID,
+ <!--  <select id="txCustomer" resultType="com.bit_etland.web.prod.Product">	
+    SELECT CUSTOMER_ID customerID,
         	CUSTOMER_NAME customerName, 
         	PASSWORD, 
         	SSN, 
@@ -28,8 +28,8 @@
     WHERE CUSTOMER_ID LIKE #{customerID}
 	 	<if test="password != null"> 
     		AND PASSWORD LIKE #{password}
-     	</if>  -->
-  </select>
+     	</if> 
+  </select> -->
     <select id="selectProducts" resultMap="result"
     	parameterType="com.bit_etland.web.cmm.Proxy">
 		SELECT @ROWNUM:=@ROWNUM+1 AS rownum,
@@ -38,30 +38,65 @@
 		ORDER BY rownum DESC
 		LIMIT #{startRow}, #{pageSize}
   </select>
+    <select id="txProduct" resultMap="result" parameterType="com.bit_etland.web.supp.Supplier">	
+     SELECT SUPPLIER_ID supplierID, CATEGORY_ID categoryID
+     FROM SUPPLIERS 
+     WHERE PRODUCT_NAME LIKE #{phone}
+
+  </select>
     <select id="countProduct" resultType="int">
 		SELECT count(*)
 		FROM PRODUCTS
   </select>
   
+  
+      <select id="countsrchs" resultType="int" parameterType="string">
 
-  <insert id="insertCustomer" parameterType="com.bit_etland.web.prod.Product"
+  SELECT count(*)
+	FROM PRODUCTS P JOIN SUPPLIERS S ON P.SUPPLIER_ID LIKE S.SUPPLIER_ID
+					 		JOIN CATEGORIES C ON P.CATEGORY_ID LIKE C.CATEGORY_ID
+	WHERE P.PRODUCT_NAME LIKE #{searchWord} OR SUPPLIER_NAME LIKE #{searchWord} OR ADDRESS LIKE #{searchWord} OR CATEGORY_NAME LIKE #{searchWord}
+  
+  </select>
+  
+  
+  
+  
+      <select id="txProducts" resultType="com.bit_etland.web.prod.Product"
+    	parameterType="com.bit_etland.web.cmm.Proxy">
+SELECT R.*
+	FROM (SELECT DISTINCT @rownum:=@rownum+1 as no1,
+					P.PRODUCT_ID productID,
+					P.PRODUCT_NAME productName,
+					S.SUPPLIER_NAME supplierID,
+					C.CATEGORY_NAME categoryID,
+					P.UNIT,
+					P.PRICE
+	FROM PRODUCTS P JOIN SUPPLIERS S ON P.SUPPLIER_ID LIKE S.SUPPLIER_ID
+					 JOIN CATEGORIES C ON P.CATEGORY_ID LIKE C.CATEGORY_ID,(SELECT @rownum:=0) AS a
+	WHERE P.PRODUCT_NAME LIKE #{searchWord} OR SUPPLIER_NAME LIKE #{searchWord} OR ADDRESS LIKE #{searchWord} OR CATEGORY_NAME LIKE #{searchWord})R
+	ORDER BY no1 DESC
+	LIMIT #{startRow}, #{pageSize};	
+  </select>
+  
+  
+
+  <insert id="insertProduct" parameterType="com.bit_etland.web.prod.Product"
   			flushCache="true" statementType="PREPARED" timeout="20">
-  		  INSERT INTO CUSTOMERS (CUSTOMER_ID,
-        					   CUSTOMER_NAME, 
-        					   PASSWORD, 
-        					   SSN, 
-        					   PHONE, 
-        					   CITY, 
-        					   ADDRESS, 
-        					   POSTALCODE) 
-        				VALUES (#{customerID},
-        						#{customerName}, 
-        						#{password}, 
-        						#{ssn},
-        						#{phone},
-        						#{city},
-        						#{address},
-        						#{postalcode}
+  		  INSERT INTO PRODUCTS (PRODUCT_ID,
+        					   PRODUCT_NAME, 
+        					   SUPPLIER_ID, 
+        					   CATEGORY_ID, 
+        					   UNIT, 
+        					   PRICE, 
+        					   PHOTO) 
+        				VALUES (#{productID},
+        						#{productName}, 
+        						#{supplierID}, 
+        						#{categoryID},
+        						#{unit},
+        						#{price},
+        						#{productImage}
         						)
   </insert>
 
