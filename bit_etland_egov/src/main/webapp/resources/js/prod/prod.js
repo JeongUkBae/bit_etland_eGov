@@ -78,6 +78,35 @@ prod = (()=>{
 				}
 			}) //ajax끝
 		});
+		$('#img_upload_btn').click(function(e){
+			e.preventDefault();
+			alert('upload_btn 클릭');
+
+		/*	let ok = (this.ok.files[0].name.match(/.jpg|gif|png|jpeg/i)) ? true : false;*/
+
+			if(true){
+				let frm = $('#img_upload_frm')[0]
+				let fd = new FormData(frm);
+				fd.append("data",frm.files[0]);
+				$.ajax({
+					url : _+'/phones/files',
+					type : 'post',
+					data : fd,
+					async : false,
+					cache : false,
+					contentType : false,
+					processData : false,
+					success : d=>{
+						alert('파일업로드 성공')
+					},
+					error : e=>{
+						alert('파일업로드 실패')
+					}
+				});
+			}else{
+				alert('jpg, gif, png, jpeg 파일만 업로드 할수 있습니다.');
+			}
+		});
 		
 		
 	};

@@ -87,7 +87,7 @@ auth = (()=>{
 					});
 			}); //navi_end
 			$('#login').addClass('active');
-		
+			$('#srch_grp').hide();
 		})
 		.fail(()=>{
 			alert(ERR_MSG);

@@ -3,6 +3,8 @@ package com.bit_etland.web.prod;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bit_etland.web.cate.Category;
 import com.bit_etland.web.cate.CategoryMapper;
 import com.bit_etland.web.cmm.IConsumer;
 import com.bit_etland.web.cmm.IFunction;
 import com.bit_etland.web.cmm.ISupplier;
+import com.bit_etland.web.cmm.Image;
 import com.bit_etland.web.cmm.PrintService;
 import com.bit_etland.web.cmm.Proxy;
 import com.bit_etland.web.supp.Supplier;
@@ -40,8 +44,20 @@ public class ProdController {
 	@Autowired SupplierMapper suppMap;
 	@Autowired Category cate;
 	@Autowired Supplier supp;
+	@Autowired Image img;
 	
-
+	@Resource(name = "uploadPath")private String uploadPath;
+	
+	
+	@PostMapping("/phones/files")
+	public Map<?,?> fileUpload(@RequestBody MultipartFile file )throws Exception{
+		ps.accept("넘어온 파일명: "+file.getName());
+		ps.accept("파일 저장경로"+uploadPath);
+		return map;
+		
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	@GetMapping("/phones/{page}")
 	public Map<?,?> list(
@@ -95,6 +111,38 @@ public class ProdController {
 		map.put("pxy", pxy);
 		return map;
 	}
+	//'/phones/'+x.srchword+'/grid/'+x.page
+	@SuppressWarnings("unchecked")
+	@GetMapping("/phones/{srchword}/grid/{page}")
+	public Map<?,?> grid(
+			@PathVariable String srchword,
+			@PathVariable String page) {
+		logger.info("======= 프로덕트 grid 진입 ======");
+		map.clear();
+		map.put("page_num", page);
+		map.put("page_size", "9");
+		String word = "%"+srchword+"%"; 
+		map.put("searchWord", word );
+		IFunction sup = (o) -> prdMap.countsrchs((String) o);
+		map.put("block_size", "5");
+		ps.accept("총 카운터는?"+sup.apply(word));
+		ps.accept("시작값: "+pxy.getStartRow());
+		ps.accept("마지막값: "+pxy.getEndRow());
+		map.put("total_count", sup.apply(word));
+		pxy.carryOut(map);
+		ps.accept(page.toString());
+		ps.accept(srchword.toString());
+		IFunction f = (Object o) -> prdMap.txProducts((Proxy) o);
+		ps.accept("과연?:::::"+pxy.getSearchWord());
+		List<Product> ls = (List<Product>) f.apply(pxy);
+		ps.accept("이건과연??:::"+ls.toString());
+		map.clear();
+		map.put("ls", ls);
+		ps.accept("이제제발!!:::"+ls);
+		map.put("pxy", pxy);
+		return map;
+	}
+	
 	@PostMapping("/phones")
 	public Product login(
 		@PathVariable String userid,

@@ -12,7 +12,16 @@
   <result property="unit" column="UNIT"/>
   <result property="price" column="PRICE"/>
   <result property="productImage" column="PHOTO"/>
+</resultMap>
 
+<resultMap id="searchMap" type="hashmap">
+  <id property="productID" column="PRODUCT_ID" />
+  <result property="productName" column="PRODUCT_NAME"/>
+  <result property="supplierID" column="SUPPLIER_ID"/>
+  <result property="categoryID" column="CATEGORY_ID"/>
+  <result property="unit" column="UNIT"/>
+  <result property="price" column="PRICE"/>
+  <result property="productImage" column="PHOTO"/>
 </resultMap>
  <!--  <select id="txCustomer" resultType="com.bit_etland.web.prod.Product">	
     SELECT CUSTOMER_ID customerID,

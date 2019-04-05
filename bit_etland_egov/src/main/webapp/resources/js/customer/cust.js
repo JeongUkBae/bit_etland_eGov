@@ -29,6 +29,7 @@ cust = (()=>{
 			});
 			$('#left_content ul').empty();
 			cust_navi();
+			$('#srch_grp').show();
 			$('#nav_mypage').addClass('active');
 			$('#srch_btn').on('click',()=>{
 				let srchword = $('input[type=text]').val();
@@ -48,11 +49,13 @@ cust = (()=>{
 	let srch=(x)=>{
 		setpath();
 		alert('테스트');
-		$.getJSON(_+'/phones/'+x.srchword+'/'+x.page, d=>{
+		let url = _+'/phones/'+x.srchword+'/'+x.page;
+		$.getJSON(url, d=>{
 			alert('getjson시작 '+x.srchword);
-
+			
 			$(r_cnt).empty();
 			$(compo.list()).appendTo(r_cnt);
+			$('<font id=""srch_title style="font-size: 30px">상품 리스트 </font>').html('#srch_title');
 			let table ="";
 			let prod_name = [
 				{val:'NO'},
@@ -127,7 +130,52 @@ cust = (()=>{
 				
 			}
 			
+		$('#grid_btn').click(e=>{
+			alert('그리드로 보기 클릭 ');
+			$(r_cnt).empty();
+			let grid = '<div class="grid" id="side-menu" >'
+						+'<div class="grid-item" id="content" >'
+						'<div class="row">';
+			let url = _+'/phones/'+x.srchword+'/grid/'+x.page;
+
+			$.getJSON(url, d=>{	
+				$(grid).appendTo(r_cnt);
+				let i=0;
+				for(i=0; i<3;i++){
+					$.each(d.ls,(i,j)=>{
+						grid +='<div class="col-md-4">'
+							+' 		<div class="#">'
+							+' 			<a href="/w3images/lights.jpg">'
+							+'  <img src="http://img.danawa.com/cp_images/service/149/3555828/151908124653815213081.jpg" alt="Lights" style="width:100%">'
+							+'			 <div class="caption">'
+							+'					<p>'+j.productName+'</p>'
+							+'				</div>'
+							+'	 		</a>'
+							+'		 </div>'
+							+'	</div>'	
+							+'</div>'
+							+'</div>'
+						
+					});
+				}
+			
+				grid +=	+'</div>'
+				$(grid).appendTo('#content');
+
+				
+			});	
 		
+			/* <div class="col-md-4">
+			    <div class="thumbnail">
+			      <a href="/w3images/lights.jpg">
+			        <img src="/w3images/lights.jpg" alt="Lights" style="width:100%">
+			        <div class="caption">
+			          <p>Lorem ipsum...</p>
+			        </div>
+			      </a>
+			    </div>
+			  </div>*/
+		});
 			
 			
 			
